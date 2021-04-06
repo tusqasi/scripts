@@ -2,11 +2,6 @@
 
 # This is the startup script.
 
-# Gnome Shenanigans 
-# gnome-flashback & 
-/usr/lib/gsd-xsettings  &
-/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1  &
-# killall gnome-flashback  
 
 pactl set-sink-mute 0 1
 firefox &
@@ -16,7 +11,6 @@ xcape -e 'Control_R=Escape' -t 400
 ~/scripts/battery_notify.fish &
 alacritty &
 picom  &
-variety &
 polybar example &
 unclutter --timeout 2  &
 copyq &
