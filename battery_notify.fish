@@ -9,11 +9,11 @@ while true
 
 	    echo "hdi"
 	     if test $BAT -lt 20
-		 notify-send   --urgency=critical Warning! "Battery \n Quite low 20%"
+		 notify-send    Warning! "Battery \n Quite low 20%"
 	     else if test $BAT -lt 30
-		 notify-send   --urgency=critical Warning! "Battery \n Low 30%"
+		 notify-send    Warning! "Battery \n Low 30%"
 	     else if test $BAT -lt 50
-		 notify-send   --urgency=critical Warning! "Battery \n Low 50%"
+		 notify-send    Warning! "Battery \n Low 50%"
 	     end
 	     sleep 3m
 	end
