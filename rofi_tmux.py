@@ -10,7 +10,8 @@ from subprocess import Popen, PIPE, STDOUT
 """
 
 
-terminal:str = "alacritty" 
+terminal: str = "alacritty"
+
 
 def switch_to(session: str):
     """spawn a terminal with the session"""
@@ -22,6 +23,8 @@ def switch_to(session: str):
         stderr=None,
         close_fds=True,
     )
+
+
 def make_session(session: str):
     """create a tmux session"""
     subprocess.Popen(
@@ -32,6 +35,8 @@ def make_session(session: str):
         stderr=None,
         close_fds=True,
     )
+
+
 def get_sessions():
     """get running sessions"""
     sessions: list[str] = os.popen("tmux list-session -F '#S'").read().split()
