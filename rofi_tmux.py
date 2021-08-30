@@ -40,6 +40,7 @@ def make_session(session: str):
 def get_sessions():
     """get running sessions"""
     sessions: list[str] = os.popen("tmux list-session -F '#S'").read().split()
+
     return sessions
 
 
@@ -50,8 +51,6 @@ def display_session(sessions: bytes):
     # print(subprocess.run(cmd,stdin=sessions))
     p: Popen = Popen(cmd, stdout=PIPE, stdin=PIPE, stderr=PIPE)
     choice, error = p.communicate(input=sessions)
-    if not choice:
-        exit()
     return choice.decode()[:-1]
 
 
