@@ -4,11 +4,14 @@
 
 
 pactl set-sink-mute 0 1
-brave &
+firefox &
 xmodmap ~/.xmodmap 
 xcape -e 'Control_R=Escape' -t 400
-~/scripts/notify.fish  & 
 ~/scripts/battery_notify.fish &
-picom  &
-unclutter --timeout 2  &
+picom &
 copyq &
+nm-applet &
+volctl &
+feh ~/Pictures/Wallpapers/light_mode/950834.png --bg-max
+lxpolkit &
+xfce4-power-manager &
