@@ -7,15 +7,14 @@ while true
 	    # BAT
 	    set -g BAT (acpi -b | cut -d',' -f 2-|cut -d',' -f1|cut -d'%' -f1)
 
-	    echo "hdi"
 	     if test $BAT -lt 20
-		 notify-send    Warning! "Battery \n Quite low 20%"
+		 notify-send    Warning! "Battery \n Quite low $BAT"
 	     else if test $BAT -lt 30
-		 notify-send    Warning! "Battery \n Low 30%"
+		 notify-send    Warning! "Battery \n Low $BAT"
 	     else if test $BAT -lt 50
-		 notify-send    Warning! "Battery \n Low 50%"
+		 notify-send    Warning! "Battery \n Low $BAT"
 	     end
-	     sleep 3m
+	     sleep 10m
 	end
 
  end
