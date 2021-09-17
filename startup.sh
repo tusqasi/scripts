@@ -7,13 +7,13 @@ pactl set-sink-mute 0 1 &
 firefox &
 xmodmap ~/.xmodmap 
 xcape -e 'Control_R=Escape' -t 400 &
-~/scripts/battery_notify.fish &
 picom &
 copyq &
 nm-applet &
 volctl &
-~/scripts/battery_notify.fish &
-feh Pictures/Wallpapers/950834.jpg --bg-max &
+~/scripts/battery_notify.py &
+feh Pictures/Wallpapers/light_mode/950834.png --bg-max &
 lxpolkit &
 xfce4-power-manager &
-alacritty -e zsh &
+unclutter --timeout 3 &
+alacritty -e tmux &

@@ -1,68 +1,48 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
+from subprocess import Popen, run, PIPE
 
-import os
-import sys
-import subprocess
-from subprocess import Popen, PIPE, STDOUT
-
-
-"""a script to spawn a tmux session
-"""
-
-
-terminal: str = "alacritty"
-
-
-def switch_to(session: str):
-    """spawn a terminal with the session"""
-    subprocess.Popen(
-        [f"{terminal} -e tmux a -t {session}"],
-        shell=True,
-        stdin=None,
-        stdout=None,
-        stderr=None,
-        close_fds=True,
-    )
-
-
-def make_session(session: str):
-    """create a tmux session"""
-    subprocess.Popen(
-        [f"tmux new-session -d -s {session}"],
-        shell=True,
-        stdin=None,
-        stdout=None,
-        stderr=None,
-        close_fds=True,
-    )
+terminal = "alacritty"
 
 
 def get_sessions():
-    """get running sessions"""
-    sessions: list[str] = os.popen("tmux list-session -F '#S'").read().split()
 
+    sessions: list[str] = (
+        run("tmux list-session -F #S".split(), capture_output=True)
+        .stdout.decode()
+        .split()
+    )
     return sessions
 
 
-def display_session(sessions: bytes):
-    """display sessions and get input"""
+def get_choice(sessions):
+    """get session choice"""
     sessions: bytes = "\n".join(sessions).encode()
     cmd: list[str] = ["rofi", "-dmenu", '-p "Select existing tmux session"']
-    # print(subprocess.run(cmd,stdin=sessions))
     p: Popen = Popen(cmd, stdout=PIPE, stdin=PIPE, stderr=PIPE)
     choice, error = p.communicate(input=sessions)
-    return choice.decode()[:-1]
+    return choice.decode()
 
 
 def main():
     sessions = get_sessions()
-    session_choice = display_session(sessions)
-    if session_choice in sessions:
-        switch_to(session_choice)
-    else:
-        make_session(session_choice)
-        switch_to(session_choice)
+    choice = get_choice(sessions)
+    if len(choice) == 0:
+        return 0
+    Popen(
+        [f"{terminal} -e tmux new-session -A -s {choice}"],
+        shell=True,
+        stdin=None,
+        stdout=None,
+        stderr=None,
+        close_fds=True,
+    )
+
+
+def testing():
+    # print(get_choice(['sys','tsd','nwe']))
+    print(get_choice(list()))
 
 
 if __name__ == "__main__":
+    # testing()
     main()
