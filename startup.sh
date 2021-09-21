@@ -14,6 +14,5 @@ volctl &
 ~/scripts/battery_notify.py &
 feh ~/Pictures/Wallpapers/light_mode/950834.png --bg-max &
 lxpolkit &
-xfce4-power-manager &
 unclutter --timeout 3 &
 alacritty -e tmux new -A -s "sys" &
