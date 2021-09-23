@@ -11,7 +11,7 @@ if [ "$1" == "create" ]; then
     gtf $W $H 60 | sed '3q;d' | sed 's/Modeline//g' | awk '{print $1;}' | sed 's/^.\(.*\).$/\1/' | xargs xrandr --addmode $O
     gtf $W $H 60 | sed '3q;d' | sed 's/Modeline//g' | awk '{print $1;}' | sed 's/^.\(.*\).$/\1/' | xargs xrandr --output $O --right-of DP-2 --mode
 elif [ "$1" == "on" ]; then
-    x11vnc  -nocursorshape -nocursorpos -noxinerama -repeat -forever -clip "$Wx$H+1920+0"
+    x11vnc  -nocursorshape -nocursorpos -noxinerama -repeat -forever -clip ${W}x${H}+1920+0
 elif [ "$1" == "off" ]; then
     xrandr --output $O --off
 else
