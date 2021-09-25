@@ -24,13 +24,14 @@ def get_battery() -> tuple[bool, int]:
     return on_ac, bat
 
 
-def send_notification(text: str, urgency="normal") -> None:
+def send_notification(text: str , urgency: str = "normal") -> None:
     cmd = [
         "notify-send",
         "-u",
         urgency,
         text,
     ]
+    print(" ".join(cmd))
     Popen(
         " ".join(cmd),
         stdout=PIPE,
@@ -39,20 +40,20 @@ def send_notification(text: str, urgency="normal") -> None:
 
 
 def main():
+    warning = "Warning\nBattery"
     while True:
         on_ac, bat = get_battery()
         if on_ac:
             if bat > 80:
-                send_notification(f"'Warning!\nBattery high: {bat}%'", "critical")
+                send_notification(f"'{warning} high {bat}%'", urgency="critical")
             elif bat > 70:
-                send_notification(f"'Warning!\nBattery high: {bat}%'")
+                send_notification(f"'{warning} high {bat}%'")
             continue
 
-        if bat < 50:
-            send_notification(f"'Warning!\nBattery low: {bat}%'")
-        elif bat < 30:
-            send_notification(f"'Warning!\nBattery low: {bat}%'", "critical")
-
+        if bat < 30:
+            send_notification(f"'{warning} low {bat}%'", urgency="critical")
+        elif bat < 50:
+            send_notification(f"'{warning} low {bat}%'")
         sleep(5 * 60)
 
 
