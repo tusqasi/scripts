@@ -3,10 +3,10 @@
 # This is the startup script.
 
 
-pactl set-sink-mute 0 1
-firefox
-xmodmap ~/.xmodmap 
-xcape -e 'Control_R=Escape' -t 400
+pactl set-sink-mute 0 1 &
+firefox&
+xmodmap ~/.xmodmap &
+xcape -e 'Control_R=Escape' -t 400 &
 picom &
 dunst &
 copyq &
