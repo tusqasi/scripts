@@ -37,11 +37,7 @@ def main():
         close_fds=True,
     )
 
-
-def testing():
-    # print(get_choice(['sys','tsd','nwe']))
-    print(get_choice(list()))
-
+ 
 
 if __name__ == "__main__":
     # testing()
