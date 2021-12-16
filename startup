@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+~/scripts/keyboard_setup
+unclutter -idle 5 &
+lxpolkit &
+volctl &
+nm-applet &
+picom &
+feh ~/Pictures/Wallpapers/light_mode/graymountains.jpg --bg-fill &
+firefox &
+copyq &
+tmux new-session -A -d -s "vm"
+alacritty -e tmux new-session -A -s "sys" &
