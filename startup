@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 
-~/scripts/keyboard_setup
+~/scripts/keyboard_setup &
+sleep 1
+feh ~/Pictures/Wallpapers/light_mode/graymountains.jpg --bg-fill &
 unclutter -idle 5 &
 lxpolkit &
 volctl &
 nm-applet &
 picom &
-feh ~/Pictures/Wallpapers/light_mode/graymountains.jpg --bg-fill &
-firefox &
 copyq &
-tmux new-session -A -d -s "vm"
+sleep 2
 alacritty -e tmux new-session -A -s "sys" &
+brave --force-device-scale-factor=1.25 &

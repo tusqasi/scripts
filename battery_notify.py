@@ -6,7 +6,7 @@ from time import sleep
 
 def get_battery() -> tuple[bool, int]:
     cmd: list[str] = ["acpi", "-b"]
-    p: Popen = (
+    p: list[str] = (
         Popen(
             " ".join(cmd),
             stdout=PIPE,
@@ -24,7 +24,7 @@ def get_battery() -> tuple[bool, int]:
     return on_ac, bat
 
 
-def send_notification(text: str , urgency: str = "normal") -> None:
+def send_notification(text: str, urgency: str = "normal") -> None:
     cmd = [
         "notify-send",
         "-u",
