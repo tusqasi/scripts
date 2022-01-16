@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+if [[ $INV_NUM == '1' ]]; then
+    INV_NUM=0
+    export INV_NUM
+
+    xmodmap ~/scripts/normalmaps
+# elif [[ $INV_NUM == '0' ]]; then
+else
+    xmodmap ~/scripts/invertedmaps
+    INV_NUM=1
+    export INV_NUM
+# else
+#     export INV_NUM=0
+fi
