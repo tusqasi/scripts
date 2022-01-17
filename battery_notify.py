@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 
-from subprocess import Popen, PIPE
-from time import sleep
-
+import time
 import utils
 
 # In seconds
@@ -32,42 +30,39 @@ def send_notification(
         urgency,
         text,
     ]
-    print(" ".join(cmd))
-    Popen(
-        " ".join(cmd),
-        stdout=PIPE,
-        shell=True,
-    )
+    utils.run_shell_cmd(cmd)
 
 
 def main():
-    while True:
-        sleep(INTERVAL)
+    while "FOREVER":
+        time.sleep(INTERVAL)
+        charging: bool
+        current_batt: int
         charging, current_batt = get_battery()
-
-        if not charging:
+        print(f"CHARGING:{charging} BATT:{current_batt}")
+        if charging:
             continue
-
-        if current_batt > MAX_BATT:
-            print(f"🛑Warning🛑\nHIGH 🔋{current_batt}%")
+        if current_batt > MAX_BATT - 10:
+            print(f"Warning HIGH 🔋{current_batt}%")
             send_notification(
                 f"'🛑Warning🛑\nHIGH 🔋{current_batt}%'",
                 urgency="critical",
             )
-        elif current_batt > MAX_BATT - 10:
-            print(f"Warning\n HIGH 🔋{current_batt}%")
+        elif current_batt > MAX_BATT:
+            print(f"Warning HIGH 🔋{current_batt}%")
             send_notification(f"'Warning\nHIGH 🔋{current_batt}%'")
             continue
 
-        if current_batt < MIN_BATT:
-            print(f"🛑Warning🛑\nLOW 🔋{current_batt}%")
+        if current_batt < MIN_BATT + 10:
+            print(f"Warning LOW 🔋{current_batt}%")
             send_notification(
                 f"'🛑Warning🛑\nLOW 🔋{current_batt}%'",
                 urgency="critical",
             )
-        elif current_batt < MIN_BATT + 10:
+        elif current_batt < MIN_BATT:
+            print(f"Warning LOW 🔋{current_batt}%")
             send_notification(f"'Warning\nLOW 🔋{current_batt}%'")
-        print("🔋Battery normal")
+        print("🔋Battery has enough charge")
 
 
 if __name__ == "__main__":
