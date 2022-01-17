@@ -6,18 +6,21 @@ import utils
 # In seconds
 INTERVAL = 10 * 60
 
+# Thresholds for the battery charging
 MAX_BATT = 80
 MIN_BATT = 30
 
 
 def get_battery() -> tuple[bool, int]:
+    """Get battery info
+    charging"""
     cmd: list[str] = ["acpi", "-b"]
     p = utils.run_shell_cmd(cmd).split("\n")[0].split()
-    on_ac = True
+    charging = True
     if p[2] == "Discharging,":
-        on_ac = False
-    bat = int(p[3][:-2])
-    return on_ac, bat
+        charging = False
+    bat = int(p[3].split("%")[0])
+    return charging, bat
 
 
 def send_notification(
@@ -41,28 +44,29 @@ def main():
         charging, current_batt = get_battery()
         print(f"CHARGING:{charging} BATT:{current_batt}")
         if charging:
-            continue
-        if current_batt > MAX_BATT - 10:
-            print(f"Warning HIGH 🔋{current_batt}%")
-            send_notification(
-                f"'🛑Warning🛑\nHIGH 🔋{current_batt}%'",
-                urgency="critical",
-            )
-        elif current_batt > MAX_BATT:
-            print(f"Warning HIGH 🔋{current_batt}%")
-            send_notification(f"'Warning\nHIGH 🔋{current_batt}%'")
-            continue
 
-        if current_batt < MIN_BATT + 10:
-            print(f"Warning LOW 🔋{current_batt}%")
-            send_notification(
-                f"'🛑Warning🛑\nLOW 🔋{current_batt}%'",
-                urgency="critical",
-            )
-        elif current_batt < MIN_BATT:
-            print(f"Warning LOW 🔋{current_batt}%")
-            send_notification(f"'Warning\nLOW 🔋{current_batt}%'")
-        print("🔋Battery has enough charge")
+            if current_batt > MAX_BATT:
+                print(f"Warning HIGH 🔋{current_batt}%")
+                send_notification(
+                    f"'🛑Warning🛑\nHIGH 🔋{current_batt}%\n🔌UNPLUG'",
+                    urgency="critical",
+                )
+            elif current_batt > MAX_BATT - 10:
+                print(f"Warning HIGH 🔋{current_batt}%")
+                send_notification(f"'Warning\nHIGH 🔋{current_batt}%\n'")
+
+        elif not charging:
+            if current_batt < MIN_BATT + 10:
+                print(f"Warning LOW 🔋{current_batt}%")
+                send_notification(
+                    f"'🛑Warning🛑\nLOW 🔋{current_batt}%\n⚡ PLUG IN'",
+                    urgency="critical",
+                )
+            elif current_batt < MIN_BATT:
+                print(f"Warning LOW 🔋{current_batt}%")
+                send_notification(f"'Warning\nLOW 🔋{current_batt}%'")
+        else:
+            print("🔋Battery has enough charge")
 
 
 if __name__ == "__main__":
