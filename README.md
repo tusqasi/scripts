@@ -2,10 +2,42 @@
 
 Just a few scripts to make your life easier 🤟
 
-All these scripts are easily ported over to bash or zsh.
+### 🔋 battery_notify.py
+Notifies the user when battery is overcharging or when it is draining.
 
-### notify.fish
-This script lets you know you have been sitting over your computer for 30 mins and encourages you to move your limbs.
+### 📋 clone_from_clipboard.py
+Clones a git repo into a folder on a keypress.
 
-### startup.fish
-This script gets called when you login to your session. (You still have to call it though.)
+### 🚀 deploy (🚧 WIP)
+Initializes a new distro with all the necessary programs and basic setup.
+
+### 🚀 deploy_arch (🚧 WIP)
+Initializes a new arch based distro with all the necessary programs and basic setup.
+
+### 📓 edit_configs.sh
+Opens a prompt to edit selected configuration files in text editor.
+
+### 📋 get_clip_board.py
+Select a clipboard entry from history
+
+### ⌨ keyboard configuration scripts
+
+A few scripts to configure keyboard behaviour   
+- keyboard_setup
+- invertedmaps
+- invert-num
+- normalmaps
+### 🖥️ ocr
+Read text from screen to clipboard.
+
+### 🖥 rofi_tmux.py
+Open a terminal windows with selected tmux session.
+
+### 🖥️ sec_scr.sh
+A script to use a second laptop as second screen.
+
+### ⚙ startup
+Basic startup applications.
+
+###
+utils.py
