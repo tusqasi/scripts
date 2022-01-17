@@ -39,5 +39,5 @@ A script to use a second laptop as second screen.
 ### ⚙ startup
 Basic startup applications.
 
-###
-utils.py
+### 🛠 utils.py
+Some python functions to make scripting easier.
