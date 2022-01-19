@@ -4,7 +4,7 @@ import time
 import utils
 
 # In seconds
-INTERVAL = 10 * 60
+INTERVAL = 1 * 60
 
 # Thresholds for the battery charging
 MAX_BATT = 80
