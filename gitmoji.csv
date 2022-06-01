@@ -1,0 +1,70 @@
+🎨 improve structure / format of the code.
+⚡ improve performance.
+🔥 remove code or files.
+🐛 fix a bug.
+🚑 critical hotfix.
+✨ introduce new features.
+📝 add or update documentation.
+🚀 deploy stuff.
+💄 add or update the ui and style files.
+🎉 begin a project.
+✅ add, update, or pass tests.
+🔒 fix security issues.
+🔐 add or update secrets.
+🔖 release / version tags.
+🚨 fix compiler / linter warnings.
+🚧 work in progress.
+💚 fix ci build.
+⬇ downgrade dependencies.
+⬆ upgrade dependencies.
+📌 pin dependencies to specific versions.
+👷 add or update ci build system.
+📈 add or update analytics or track code.
+♻ refactor code.
+➕ add a dependency.
+➖ remove a dependency.
+🔧 add or update configuration files.
+🔨 add or update development scripts.
+🌐 internationalization and localization.
+✏ fix typos.
+💩 write bad code that needs to be improved.
+⏪ revert changes.
+🔀 merge branches.
+📦 add or update compiled files or packages.
+👽 update code due to external api changes.
+🚚 move or rename resources (e.g.: files, paths, routes).
+📄 add or update license.
+💥 introduce breaking changes.
+🍱 add or update assets.
+♿ improve accessibility.
+💡 add or update comments in source code.
+🍻 write code drunkenly.
+💬 add or update text and literals.
+🗃 perform database related changes.
+🔊 add or update logs.
+🔇 remove logs.
+👥 add or update contributor(s).
+🚸 improve user experience / usability.
+🏗 make architectural changes.
+📱 work on responsive design.
+🤡 mock things.
+🥚 add or update an easter egg.
+🙈 add or update a .gitignore file.
+📸 add or update snapshots.
+⚗ perform experiments.
+🔍 improve seo.
+🏷 add or update types.
+🌱 add or update seed files.
+🚩 add, update, or remove feature flags.
+🥅 catch errors.
+💫 add or update animations and transitions.
+🗑 deprecate code that needs to be cleaned up.
+🛂 work on code related to authorization, roles and permissions.
+🩹 simple fix for a non-critical issue.
+🧐 data exploration/inspection.
+⚰ remove dead code.
+🧪 add a failing test.
+👔 add or update business logic
+🩺 add or update healthcheck.
+🧱 infrastructure related changes.
+🧑 improve developer experience
