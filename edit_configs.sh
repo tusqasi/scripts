@@ -17,12 +17,11 @@ case $1 in
 	;;
     * )
 	 { 
-	   find $zsh_dir -maxdepth 1 -name "*.zsh" ;
-	   find $nvim_dir -maxdepth 2 -name "*.vim" ;
 	   find $nvim_dir -maxdepth 3 -name "*.lua" ;
+	   find $nvim_dir -maxdepth 2 -name "*.vim" ;
 	   find $qtile_dir -maxdepth 2 -name "*.py" ;
+	   find $zsh_dir -maxdepth 1 ;
 	   find $fish_dir -maxdepth 1 -name "*.fish" ;
-	   find $awesome_dir -maxdepth 2 -name "*.lua" ;
 	   echo "/home/tusqasi/.config/alacritty/alacritty.yml" ;
 	   echo "/home/tusqasi/.config/tmux/tmux.conf" ;
 	 } |

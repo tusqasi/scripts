@@ -28,9 +28,7 @@ def send_notification(text: str, urgency: str = "normal") -> None:
 
 
 def main():
-    print(
-        run_shell_cmd("ls".split()),
-    )
+    send_notification("hello 'there how is it going'")
 
 
 if __name__ == "__main__":
