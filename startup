@@ -1,13 +1,30 @@
 #!/usr/bin/env bash
 
+
+desktop=$XDG_CURRENT_DESKTOP
+session=$DESKTOP_SESSION
+
 ~/scripts/keyboard_setup &
-unclutter -idle 5 &
-lxpolkit &
-volctl &
-nm-applet &
-picom &
-feh ~/Pictures/Wallpapers/light_mode/graymountains.jpg --bg-fill &
-copyq &
 alacritty -e tmux new-session -A -s "sys" &
+xset b off
+variety &
 brave --force-device-scale-factor=1.25 &
-~/scripts/battery_notify.py &
+if [ "$desktop" == "KDE" ]; then
+    # echo "In kde plasma"
+    # notify-send $desktop
+elif ["$session" == "plasma" ]; then
+    # echo "In kde plasma"
+    # notify-send $session
+else
+    unclutter -idle 5 &
+    lxpolkit &
+    /usr/lib/polkit-kde-authentication-agent-1 &
+    /usr/lib/pam_kwallet_init  
+    volctl &
+    nm-applet &
+    picom &
+    # feh ~/Pictures/Wallpapers/light_mode/graymountains.jpg --bg-fill &
+    copyq &
+    # firefox &
+    # ~/scripts/battery_notify.py &
+fi
