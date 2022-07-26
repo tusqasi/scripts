@@ -1,0 +1,176 @@
+#!/usr/bin/env python
+# Future use
+"""project_start
+Usage:
+    project_start <device> <branches>...
+"""
+# project_start (--path=PROJECT_PATH | --name=PROJECT_NAME | --branches=<branches>... | --device=<device>)
+from docopt import docopt
+
+# import sys
+from typing import Optional
+import utils
+# from time import sleep
+import subprocess
+import libtmux
+import os
+from rich import inspect
+
+# make tmux sesion
+# go to a given path
+# open neovim with all files in lib/*
+"""
+Assume a project is folder with this structure
+├── app                 # this is a git bare repo
+│   ├── worktrees
+│   │   ├── polls
+│   │   └── master
+│   ├── branches
+│   └── other git stuff
+└── backend
+    ├── worktrees
+    │   └── patch-1
+    ├── branches
+    └── other git stuff
+"""
+
+args = docopt(__doc__)
+
+PROJECT_PATH = "/home/tusqasi/Documents/dev/digitize/app"
+
+PROJECT_NAME = "flutter_project"
+
+BRANCHES = args["<branches>"] if args["<branches>"] else ["master"]
+
+DEVICE = args["<device>"] if args["<device>"] in [
+    "andriod",
+    "linux",
+] else "linux"
+
+
+def branch_exists(branch: str, git_dir: str = PROJECT_PATH):
+    # utils.run_shell_cmd returns with a `\n` at the end. Removing that here
+    output = utils.run_shell_cmd(
+        [f"git -C {git_dir} rev-parse --is-inside-git-dir"], ).split("\n")[0]
+
+    assert output == "true", f"Git repo not found in: `{git_dir}`"
+    # print(f"Git repo found in: `{git_dir}`")
+
+    # branches exist in worktree folder
+    branch_path = os.path.join(git_dir, "worktrees", branch)
+    if os.path.exists(branch_path):
+        return True
+    else:
+        False
+
+
+def create_worktree_window(window_name: str, session: libtmux.Session,
+                           start_directory):
+    print("creating window")
+    session.new_window(window_name=window_name,
+                       start_directory=start_directory)
+
+    session.select_window(target_window=window_name).panes[0].send_keys(
+        "nvim `find lib -type f`",
+        suppress_history=False,
+        enter=True,
+    )
+    session.select_window(target_window=window_name).split_window(
+        percent=25, ).send_keys(
+            f"flutter run -d {DEVICE}",
+            suppress_history=False,
+            # enter=True,
+        )
+    session.select_window(target_window=window_name).rename_window(window_name)
+    return session
+
+
+def project_start(
+    project_path: str,
+    project_name: str,
+    worktrees: list[str],
+    device: str,
+    server: libtmux.Server,
+) -> Optional[libtmux.Server]:
+    curr_ses = server.sessions[0]
+
+    # TODO Please refactor this
+    start_directory = (os.path.join(
+        project_path,
+        "worktrees",
+        worktrees[0],
+    ) if worktrees[0] else os.path.join(
+        project_path,
+        "worktrees",
+        "master",
+    ))
+
+    start_directory = os.path.expanduser(start_directory)
+    print(start_directory)
+    assert os.path.exists(start_directory), f"Doesn't exist: {start_directory}"
+
+    # Session with given name exists
+    if ses := server.find_where({"session_name": project_name}):
+        print(f"{project_name} session exists")
+        print("switching to it")
+        ses.switch_client()
+        return False
+
+    # Session does not exist and will be created
+    print(f"Creating session {project_name} at {start_directory}")
+    flutter_session = server.new_session(
+        session_name=project_name,
+        start_directory=start_directory,
+    )
+    flutter_session.select_window(target_window="1").panes[0].send_keys(
+        "nvim `find lib -type f`",
+        suppress_history=False,
+        enter=True,
+    )
+    flutter_session.select_window(target_window="1").split_window(
+        percent=25,
+        start_directory=start_directory,
+    ).send_keys(
+        f"flutter run -d {device}",
+        suppress_history=False,
+        enter=True,
+    )
+    flutter_session.select_window(target_window="1").rename_window(
+        worktrees[0])
+    flutter_session.switch_client()
+    print(f"{ worktrees=}")
+    print(f"{list( filter(branch_exists ,worktrees))=}")
+    if len(worktrees) > 1:
+        for worktree in filter(branch_exists, worktrees[1:]):
+            print("here")
+            flutter_session = create_worktree_window(
+                worktree,
+                flutter_session,
+                start_directory=os.path.join(project_path, "worktrees",
+                                             worktree))
+    return curr_ses
+
+
+def main():
+    if project_start(
+            project_path=PROJECT_PATH,
+            project_name=PROJECT_NAME,
+            worktrees=BRANCHES,
+            device=DEVICE,
+            server=libtmux.Server(),
+    ):
+        subprocess.Popen("scrcpy")
+
+
+def list_branches(git_dir: str):
+    pass
+
+
+def test():
+    for branch in BRANCHES:
+        print(f"{branch_exists(branch)=}")
+
+
+if __name__ == "__main__":
+    inspect(args, help=False)
+    print(main())
