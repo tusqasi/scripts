@@ -1,0 +1,49 @@
+#!/usr/bin/env dash
+# set -e
+vm_name=ubun18
+user_name=tusqasi
+
+# check if running
+	# if running then skip starting
+	# else start vm
+# check if network is up
+	# if up 
+		# start tmux
+	# check till network is up
+# check if ssh is up
+vm_started=$(sudo virsh list --state-running |grep $vm_name)
+# check vm started
+echo $vm_started dsf
+while [ -z "${vm_started}" ];do
+	echo "vm not started\n starting again"
+	sudo virsh start $vm_name
+	vm_started=$(sudo virsh list --state-running |grep $vm_name)
+done
+echo vm running
+ip=$(sudo virsh net-dhcp-leases default |grep "$vm_name"|awk '{print $(NF-2)}'|cut -d'/' -f1)
+echo ip: $ip
+
+while [ -z "${ip}" ];do
+	echo no ip.  wait
+	sleep 4
+	echo ip: $ip
+	sudo virsh net-dhcp-leases default
+	ip=$(sudo virsh net-dhcp-leases default |grep "$vm_name"|awk '{print $(NF-2)}'|cut -d'/' -f1)
+done
+
+session_name=eyantra
+tmux new-session  -A -d -s "$session_name"
+tmux switch-client -t $session_name:
+tmux splitw -t $session_name:
+sleep 3
+tmux send-keys -t $session_name:1.1 "ssh $user_name@$ip" Enter
+sleep 0.5
+tmux send-keys -t $session_name:1.1 "zsh" Enter
+sleep 0.5
+tmux send-keys -t $session_name:1.1 "cd ~/prime_server" Enter
+sleep 0.5
+tmux send-keys -t $session_name:1.0 "sshfs $user_name@$ip:/home/$user_name/prime_server/ ~/sandbox/prime_server/" Enter
+sleep 0.5
+tmux send-keys -t $session_name:1.0 "cd ~/sandbox/prime_server" Enter
+
+echo done
