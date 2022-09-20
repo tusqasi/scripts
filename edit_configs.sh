@@ -1,31 +1,36 @@
 #!/usr/bin/env bash
-set -e
 
-qtile_dir=~/.config/qtile
+# This option will stop running the script, on any error
+# set -e
+alacritty_dir=~/.config/alacritty
 nvim_dir=~/.config/nvim
+tmux_dir=~/.config/tmux/
 zsh_dir=~/.config/zsh
-fish_dir=~/.config/fish
-awesome_dir=~/.config/awesome
+qtile_dir=~/.config/qtile
+i3_dir=~/.config/i3
 scripts_dir=~/scripts
 export previewer=batcat
 if  command -v bat &> /dev/null; then
     export previewer="bat"
 fi
-case $1 in
-    s | S)
-    /bin/ls $scripts_dir -1 |fzf -m --preview="$previewer --color=always $scripts_dir{}" |xargs -I{} echo $scripts_dir/{}| xargs nvim -c "set autochdir"
-	;;
-    * )
-	 { 
-	   find $nvim_dir -maxdepth 3 -name "*.lua" ;
-	   find $nvim_dir -maxdepth 2 -name "*.vim" ;
-	   find $qtile_dir -maxdepth 2 -name "*.py" ;
-	   find $zsh_dir -maxdepth 1 ;
-	   find $fish_dir -maxdepth 1 -name "*.fish" ;
-	   echo "/home/tusqasi/.config/alacritty/alacritty.yml" ;
-	   echo "/home/tusqasi/.config/tmux/tmux.conf" ;
-	 } |
- 	 cut -d/ -f5- |
-	 fzf -m --preview="$previewer --color=always ~/.config/{}" |xargs -I{} echo ~/.config/{} |xargs nvim -c "set autochdir"
-	;;
-esac
+{
+    find $alacritty_dir -type f ;
+    find $nvim_dir -maxdepth 3 -name "*.lua" ;
+    find $nvim_dir -maxdepth 3 -name "*.vim" ;
+    find $tmux_dir -maxdepth 1 -type f ;
+    find $zsh_dir -maxdepth 1 -type f;
+    find $i3_dir -maxdepth 1 -type f;
+    find $scripts_dir -maxdepth 1 -type f;
+    echo $HOME/.zshrc;
+    echo $HOME/.bashrc;
+    # find $fish_dir -maxdepth 1 -name "*.fish" ;
+    # find $qtile_dir -maxdepth 2 -name "*.py" ;
+} |
+    fzf -m --preview="$previewer --color=always {}" |
+    xargs -I{} echo {} | while read; do
+  if [ $REPLY ]; then
+    nvim -c "set autochdir" $REPLY
+    exit
+  fi
+  echo $REPLY
+done
