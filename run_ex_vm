@@ -1,6 +1,9 @@
 #!/usr/bin/env dash
 # set -e
-vm_name=ubun18
+# select vm
+#
+vm_name=eyantra
+host_name=vm20
 user_name=tusqasi
 
 # check if running
@@ -28,7 +31,7 @@ while [ -z "${ip}" ];do
 	sleep 4
 	echo ip: $ip
 	sudo virsh net-dhcp-leases default
-	ip=$(sudo virsh net-dhcp-leases default |grep "$vm_name"|awk '{print $(NF-2)}'|cut -d'/' -f1)
+	ip=$(sudo virsh net-dhcp-leases default |grep "$host_name"|awk '{print $(NF-2)}'|cut -d'/' -f1)
 done
 
 session_name=eyantra
@@ -38,12 +41,12 @@ tmux splitw -t $session_name:
 sleep 3
 tmux send-keys -t $session_name:1.1 "ssh $user_name@$ip" Enter
 sleep 0.5
-tmux send-keys -t $session_name:1.1 "zsh" Enter
+# tmux send-keys -t $session_name:1.1 "zsh" Enter
 sleep 0.5
-tmux send-keys -t $session_name:1.1 "cd ~/prime_server" Enter
+# tmux send-keys -t $session_name:1.1 "cd " Enter
 sleep 0.5
-tmux send-keys -t $session_name:1.0 "sshfs $user_name@$ip:/home/$user_name/prime_server/ ~/sandbox/prime_server/" Enter
+tmux send-keys -t $session_name:1.0 "sshfs $user_name@$ip:/home/$user_name/ ~/eyantra_vm" Enter
 sleep 0.5
-tmux send-keys -t $session_name:1.0 "cd ~/sandbox/prime_server" Enter
+tmux send-keys -t $session_name:2.0 "cd ~/eyantra_vm" Enter
 
 echo done

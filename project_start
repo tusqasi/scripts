@@ -36,7 +36,7 @@ Assume a project is folder with this structure
 
 args = docopt(__doc__)
 
-PROJECT_PATH = "/home/tusqasi/Documents/dev/digitize/app"
+PROJECT_PATH = "/home/tusqasi/dev/digitize/app"
 
 PROJECT_NAME = "flutter_project"
 
@@ -92,7 +92,7 @@ def project_start(
     device: str,
     server: libtmux.Server,
 ) -> Optional[libtmux.Server]:
-    curr_ses = server.sessions[0]
+    current_session = server.sessions[0]
 
     # TODO Please refactor this
     start_directory = (os.path.join(
@@ -118,12 +118,11 @@ def project_start(
 
     # Session does not exist and will be created
     print(f"Creating session {project_name} at {start_directory}")
-    flutter_session = server.new_session(
-        session_name=project_name,
-        start_directory=start_directory,
-    )
+    flutter_session = server.new_session(session_name=project_name,
+                                         # start_directory=start_directory,
+                                         )
     flutter_session.select_window(target_window="1").panes[0].send_keys(
-        "nvim `find lib -type f`",
+        f"cd {start_directory};nvim `find lib -type f`",
         suppress_history=False,
         enter=True,
     )
@@ -148,7 +147,19 @@ def project_start(
                 flutter_session,
                 start_directory=os.path.join(project_path, "worktrees",
                                              worktree))
-    return curr_ses
+    # directory = PROJECT_PATH / backend
+    # command = nvim `find ./ -type f`
+    print("creating backend window")
+    current_session.new_window(window_name="backend",
+                               start_directory=os.path.join(
+                                   PROJECT_PATH, "backend"))
+
+    current_session.select_window(target_window="backend").panes[0].send_keys(
+        "nvim`find . -type f`",
+        suppress_history=False,
+        enter=True,
+    )
+    return current_session
 
 
 def main():
@@ -159,11 +170,8 @@ def main():
             device=DEVICE,
             server=libtmux.Server(),
     ):
+        print("[testing] starting scrcpy here")
         subprocess.Popen("scrcpy")
-
-
-def list_branches(git_dir: str):
-    pass
 
 
 def test():
