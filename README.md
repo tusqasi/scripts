@@ -40,8 +40,8 @@ A few scripts to configure keyboard behaviour
 - normalmaps 🗑
 
 ## 🔍 ocr
-Read text from screen to clipboard.
-
+Read text from screen to clipboard.  
+[Originally from sdushantha](https://github.com/sdushantha/), I made it work for me.
 ## 🖥 rofi_tmux.py
 Open a terminal windows with selected tmux session.
 
